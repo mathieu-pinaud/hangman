@@ -1,0 +1,51 @@
+# fruit
+pomme,fruit,facile
+banane,fruit,moyen
+ananas,fruit,difficile
+mangue,fruit,très difficile
+# animaux
+lapin,animaux,facile
+poule,animaux,facile
+canard,animaux,facile
+mouton,animaux,facile
+cheval,animaux,facile
+chat,animaux,facile
+chien,animaux,facile
+elephant,animaux,difficile
+crocodile,animaux,moyen
+animaux,moyen
+# pays
+france,pays,facile
+australie,pays,moyen
+kazakhstan,pays,difficile
+japon,,moyen
+# légumes
+carotte,légumes,facile
+brocoli,légumes,moyen
+artichaut,légumes,difficile
+# villes
+paris,villes,facile
+sydney,villes,moyen
+ouagadougou,villes,difficile
+# métiers
+boulanger,métiers,facile
+architecte,métiers,moyen
+neurochirurgien,métiers,difficile
+# sport
+football,sport,facile
+basketball,sport,moyen
+curling,sport,difficile
+plongeon,sport,très difficile
+# instruments
+piano,instruments,facile
+violon,instruments,moyen
+saxophone,,difficile
+instruments,difficile
+# couleurs
+rouge,couleurs,facile
+vert,couleurs,moyen
+turquoise,couleurs,difficile
+jaune,couleurs,très difficile
+bleu,couleurs,facile
+orange,couleurs,moyen
+indigo,couleurs,difficile
