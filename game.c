@@ -41,20 +41,24 @@ int game(t_words *word) {
     status.tried_letters[1] = status.word->word[my_strlen(status.word->word) - 1];
     status.tried_letters[2] = '\0';
     status.hidden_word = create_hidden_word(status);
-    char *input = NULL;
-    size_t len = 0;
+    char hangman_art[6][7][8];
+    char input[my_strlen(status.word->word) + 1];
 
+
+    create_drawing(hangman_art);
     while(status.tries > 0 && status.word_tries > 0) {
-        printf("Word: %s\n", status.hidden_word);
-        printf("Tried letters: %s\n", status.tried_letters);
-        getline(&input, &len, stdin);
-        if (my_strlen(input) == 2) {
+        print_game(status, hangman_art);
+        getstr(input);
+        if (my_strlen(input) == 1) {
             if (is_in_word(input[0], status.word->word)) {
                 update_hidden_word(input[0], status.hidden_word, status.word->word);
                 if (my_strcmp(status.hidden_word, status.word->word) == 0) {
-                    free(input);
+                    print_game(status, hangman_art);
                     free(status.hidden_word);
-                    input = NULL;
+                    for (int i = 0; i < 3; i++) {
+                        if (status.tried_words[i] != NULL)
+                            free(status.tried_words[i]);
+                    }
                     return(0);
                 }
             }
@@ -66,24 +70,24 @@ int game(t_words *word) {
                 status.tried_letters[len + 1] = '\0';
             }
         }
-        else if (my_strlen(input) > 2) {
+        else if (my_strlen(input) > 1) {
             bool is_in_tried_words = false;
             for (int i = 0; i < 3; i++) {
                 if (status.tried_words[i] != NULL && my_strcmp(input, status.tried_words[i]) == 0)
                     is_in_tried_words = true;
             }
             if (my_strcmp(input, status.word->word) == 0) {
-                free(input);
+                print_game(status, hangman_art);
                 free(status.hidden_word);
                 for (int i = 0; i < 3; i++) {
                     if (status.tried_words[i] != NULL)
                         free(status.tried_words[i]);
                 }
-                input = NULL;
                 return(0);
             }
             else if (!is_in_tried_words) {
                 status.word_tries -= 1;
+                status.tries -= 1;
                 for (int i = 0; i < 3; i++) {
                     if (status.tried_words[i] == NULL) {
                         status.tried_words[i] = my_strdup(input);
@@ -92,9 +96,8 @@ int game(t_words *word) {
                 }
             }
         }
-        free(input);
-        input = NULL;
     }
+    print_game(status, hangman_art);
     for (int i = 0; i < 3; i++) {
         if (status.tried_words[i] != NULL)
             free(status.tried_words[i]);
@@ -103,33 +106,36 @@ int game(t_words *word) {
     return(1);
 }
 
-void game_launcher(t_words *list, char *difficulty, char *category) {
+void game_launcher(t_words *list) {
     int i = 0;
     char replay;
     t_words *tmp = list;
     while (tmp != NULL) {
-        if (my_strcmp(tmp->difficulty, difficulty) == 0)
-            if (category == NULL || my_strcmp(tmp->category, category) == 0)
-                i += 1;
+        i += 1;
         tmp = tmp->next;
     }
+    srand(time(NULL));
+    initscr();
     do {
-        int random = rand() % i;
+        int random = (rand() % (i - 1)) + 1;
         tmp = list;
         while (random > 0) {
-            if (my_strcmp(tmp->difficulty, difficulty) == 0)
-            if (category == NULL || my_strcmp(tmp->category, category) == 0)
-                random -= 1;
+            random -= 1;
             tmp = tmp->next;;
         }
         if (game(tmp) == 0) {
-            printf("You won !\n");
-            printf("Do you want to play again? (Y/N): ");
-            scanf(" %c", &replay);
+            printw("You won !\n");
+            printw("Do you want to play again? (Y/N): ");
+            refresh();
+            replay = getch();
+            printw("\n");
         }    
         else {
-            printf("You lost !\n");
+            printw("You lost !\n");
+            refresh();
             replay = 'N';
+            getch();    
         }
     } while (replay != 'N' && replay != 'n');
+    endwin();
 }

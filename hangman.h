@@ -7,7 +7,14 @@
 #include <ncurses.h>
 #include <stdbool.h>
 #include <fcntl.h>
+#include <time.h>
 #include <string.h>
+
+typedef struct wrong_line {
+    char *line;
+    int line_number;
+    struct wrong_line *next;
+} t_wrong_line;
 
 typedef struct words {
     char *word;
@@ -34,10 +41,15 @@ char *my_itoa(int n);
 int tab_len(char **tab);
 t_words *create_word(char *word, char *category, char *difficulty);
 void push_back_word(t_words *list, t_words *new);
-t_words *file_to_list(int fd, char *difficulty, char *category);
+t_words *file_to_list(int fd, char *difficulty, char *category, t_wrong_line **wrong_lines);
 void my_free_list(t_words *list);
 void my_print_list(t_words *list);
-void game_launcher(t_words *list, char *difficulty, char *category);
-
+void game_launcher(t_words *list);
+void print_game(t_game_status status, char hangman_art[6][7][8]);
+void create_drawing(char hangman_art[6][7][8]);
+t_wrong_line *create_wrong_line(char *line, int line_number);
+void push_back_wrong_line(t_wrong_line *list, t_wrong_line *new);
+void my_free_wrong_lines(t_wrong_line *list);
+void my_print_wrong_lines(t_wrong_line *list);
 
 #endif // HANGMAN_H

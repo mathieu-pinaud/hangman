@@ -28,6 +28,7 @@ paris,villes,facile
 sydney,villes,moyen
 ouagadougou,villes,difficile
 # métiers
+# ceci est un commentair
 boulanger,métiers,facile
 architecte,métiers,moyen
 neurochirurgien,métiers,difficile
